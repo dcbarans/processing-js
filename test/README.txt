@@ -23,7 +23,7 @@ mozilla-central/js/src/opt-build/js
 
 You should update the Makefile with the path to your js executable:
 
-JS=/path/to/your/js/src/opt-build/js
+JSSHELL=/path/to/your/js/src/opt-build/js
 
 Once you have a working JS Shell, you can run tests and do other
 tasks like so:
