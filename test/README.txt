@@ -1,70 +1,96 @@
-Processing.js automated tests rely on a working JavaScript Shell.
-The easiest way to do this is to build one from source.  First you
-will need a working Mozilla build environment:
 
-https://developer.mozilla.org/en/Build_Documentation
+ === AUTOMATED TESTINTG ===========================
 
-Next, obtain the Firefox source code:
+ 1. Setup and Install
+ 2. Running Tests
+ 3. Reference
 
-$ hg clone http://hg.mozilla.org/mozilla-central
 
-Now configure and build the source (NOTE: use the appropriate
-autoconf v 2.13 for your system, autoconf213, autoconf-2.13, etc.):
+ 1 --- SETUP AND INSTALL --------------------------
 
-$ cd mozilla-central/js/src
-$ autoconf213
-$ mkdir opt-build
-$ ../configure --disable-debug --enable-optimize
-$ make
 
-This should produce a working JavaScript Shell at:
+  Processing.js automated tests rely on a working JavaScript Shell.
+  The easiest way to do this is to build one from source.  First you
+  will need a working Mozilla build environment:
 
-mozilla-central/js/src/opt-build/js
+  https://developer.mozilla.org/en/Build_Documentation
 
-You should update the Makefile with the path to your js executable:
+  Next, obtain the Firefox source code:
 
-JS=/path/to/your/js/src/opt-build/js
+    $ hg clone http://hg.mozilla.org/mozilla-central
 
-Once you have a working JS Shell, you can run tests and do other
-tasks like so:
+  Now configure and build the source (NOTE: use the appropriate
+  autoconf v 2.13 for your system, autoconf213, autoconf-2.13, etc.):
 
-1) Run all tests (unit, parser):
+    $ cd mozilla-central/js/src
+    $ autoconf213
+    $ mkdir opt-build
+    $ ../configure --disable-debug --enable-optimize
+    $ make
 
-   $ make check
+  This should produce a working JavaScript Shell at:
 
-2) Run only parser tests:
+    mozilla-central/js/src/opt-build/js
 
-   $ make check-parser
 
-3) Run only unit tests:
+  Create an environment variable called JSSHELL that points to your 
+  new JavaScript shell executable.
 
-   $ make check-unit
+  For Example, in unix, edit your ~/.profile, ~/.bashrc, or ~/.bash_profile
+  and add the following
 
-4) Run only one test, or tests under a particular dir:
+    export JSSHELL=/home/user/mozilla-central/objdir-release/dist/bin/js
 
-   $ make check-one TEST=/path/to/single/test.js
 
-   or
+ 2 --- RUNNING TESTS ------------------------------
 
-   $ make check-one TEST=/path/to/dir/with/tests
 
-5) Parse a Processing file into JavaScript:
+  Once you have a working JS Shell, you can run tests and do other
+  tasks like so:
 
-   $ make /path/to/processing-pde-file.js
+  1) Run all tests (unit, parser):
 
-   For example, given /tmp/foo.pde (note the extension):
+     $ make check
 
-   $ make /tmp/foo.js
+  2) Run only parser tests:
 
-6) Create a release:
+     $ make check-parser
 
-   $ make release
+  3) Run only unit tests:
 
-7) Clean out old release:
+     $ make check-unit
 
-   $ make clean
+  4) Run only one test, or tests under a particular dir:
 
-8) Check Processing.js for errors (jslint):
+     $ make check-one TEST=/path/to/single/test.js
 
-   $ make check-lint
+     or
+
+     $ make check-one TEST=/path/to/dir/with/tests
+
+  5) Parse a Processing file into JavaScript:
+
+     $ make /path/to/processing-pde-file.js
+
+     For example, given /tmp/foo.pde (note the extension):
+
+     $ make /tmp/foo.js
+
+  6) Create a release:
+
+     $ make release
+
+  7) Clean out old release:
+
+     $ make clean
+
+  8) Check Processing.js for errors (jslint):
+
+     $ make check-lint
+
+
+ 3 --- REFERENCES ------------------------------
+
+  See https://processing-js.lighthouseapp.com/projects/41284/writing-automated-tests
+  for further documentation on testing and writing proper tests.
 
