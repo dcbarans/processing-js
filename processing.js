@@ -7357,6 +7357,16 @@
       }
     };
 
+
+    //////////////////////////////////////////////////////////////////////////
+    // Debug and Error handling
+    //////////////////////////////////////////////////////////////////////////
+
+    p.ProcessingError = function() {
+      
+    };
+
+
     //////////////////////////////////////////////////////////////////////////
     // Event handling
     //////////////////////////////////////////////////////////////////////////
@@ -7591,8 +7601,10 @@
       }
     });
 
-    // Place-holder for debugging function
-    p.debug = function(e) {};
+    // Default error handling, can be overridden for advanced functionality
+    p.debug = function(e) {
+      throw "Processing.js: " + e;
+    };
 
     // Get the DOM element if string was passed
     if (typeof curElement === "string") {
@@ -7645,23 +7657,34 @@
             if(typeof aCode === "function") {
               aCode(p);
             } else {
-              eval (" (function(__p__) { " +
-                        localizedProperties +
-                        parsedCode +
-                    "   if (setup) {" +
-                    "     __p__.setup = setup;" +
-                    "     setup();" +
-                    "   }" +
-                    "   if (draw) {" +
-                    "     __p__.draw = draw;" +
-                    "     if (!doLoop) {" +
-                    "       redraw();" +
-                    "     } else {" +
-                    "       loop();" +
-                    "     }" +
-                    "   }" +
-                    " })(p);"
-              );
+              try {
+                eval (" (function(__p__) { " +
+                          localizedProperties +
+                          parsedCode +
+                      "   if (setup) {" +
+                      "     __p__.setup = setup;" +
+                      "     setup();" +
+                      "   }" +
+                      "   if (draw) {" +
+                      "     __p__.draw = draw;" +
+                      "     if (!doLoop) {" +
+                      "       redraw();" +
+                      "     } else {" +
+                      "       loop();" +
+                      "     }" +
+                      "   }" +
+                      " })(p);"
+                );
+              }
+              catch(e) {
+                var scriptlines = aCode.split('\n'),
+                    lineNum = arguments[2],
+                    src = p.canvas.getAttribute('data-processing-sources') ||
+                          p.canvas.getAttribute('data-src') ||
+                          p.canvas.getAttribute('datasrc');
+                var badCode = scriptlines[lineNum]; 
+                p.debug(e.name+':', badCode,'@'+src+':line '+lineNum,'| '+e.message);
+              }
             }
           } else {
             window.setTimeout(executeSketch, 10);
